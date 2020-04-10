@@ -1,15 +1,13 @@
 #pragma once
 #include "zbsubr.h"
 #include "zops.h"
-#include <limits>
-#include <algorithm>
-#include <cmath>
+#include <limits.h>
+//#include <algorithm>
+#include <math.h>
 
-namespace zbessel {
 
-template <class>
-void zuni1(double zr, double zi, double fnu, int kode, int n, double *__restrict__ yr,
-           double *__restrict__ yi, int *__restrict__ nz, int *__restrict__ nlast, double fnul, double tol,
+void zuni1(double zr, double zi, double fnu, int kode, int n, double *restrict yr,
+           double *restrict yi, int *restrict nz, int *restrict nlast, double fnul, double tol,
            double elim, double alim) {
   /* Local variables */
   int i__, k, m, nd;
@@ -73,11 +71,11 @@ void zuni1(double zr, double zi, double fnu, int kode, int n, double *__restrict
   csrr[0] = crsc;
   csrr[1] = 1.;
   csrr[2] = cscl;
-  bry[0] = std::numeric_limits<double>::min() * 1e3 / tol;
+  bry[0] = DBL_MIN * 1e3 / tol;
   /* ----------------------------------------------------------------------- */
   /*     CHECK FOR UNDERFLOW AND OVERFLOW ON FIRST MEMBER */
   /* ----------------------------------------------------------------------- */
-  fn = std::max(fnu, 1.);
+  fn = MAX(fnu, 1.);
   init = 0;
   zunik(zr, zi, fn, 1, 1, tol, init, &phir, &phii, &zeta1r, &zeta1i,
         &zeta2r, &zeta2i, &sumr, &sumi, cwrkr, cwrki);
@@ -97,11 +95,11 @@ L10:
   s1i = -zeta1i + zeta2i;
 L20:
   rs1 = s1r;
-  if (std::fabs(rs1) > elim) {
+  if (fabs(rs1) > elim) {
     goto L130;
   }
 L30:
-  nn = std::min(2, nd);
+  nn = MIN(2, nd);
   for (i__ = 1; i__ <= nn; ++i__) {
     fn = fnu + (nd - i__);
     init = 0;
@@ -126,21 +124,21 @@ L30:
     //     TEST FOR UNDERFLOW AND OVERFLOW */
     // -----------------------------------------------------------------------/
     rs1 = s1r;
-    if (std::fabs(rs1) > elim) {
+    if (fabs(rs1) > elim) {
       goto L110;
     }
     if (i__ == 1) {
       iflag = 2;
     }
-    if (std::fabs(rs1) < alim) {
+    if (fabs(rs1) < alim) {
       goto L60;
     }
     // -----------------------------------------------------------------------/
     //     REFINE  TEST AND SCALE */
     // -----------------------------------------------------------------------/
     aphi = zabs(phir, phii);
-    rs1 += std::log(aphi);
-    if (std::fabs(rs1) > elim) {
+    rs1 += log(aphi);
+    if (fabs(rs1) > elim) {
       goto L110;
     }
     if (i__ == 1) {
@@ -160,9 +158,9 @@ L30:
      */
     s2r = phir * sumr - phii * sumi;
     s2i = phir * sumi + phii * sumr;
-    str = std::exp(s1r) * cssr[iflag - 1];
-    s1r = str * std::cos(s1i);
-    s1i = str * std::sin(s1i);
+    str = exp(s1r) * cssr[iflag - 1];
+    s1r = str * cos(s1i);
+    s1i = str * sin(s1i);
     str = s2r * s1r - s2i * s1i;
     s2i = s2r * s1i + s2i * s1r;
     s2r = str;
@@ -190,7 +188,7 @@ L30:
   rzr = (str + str) * rast;
   rzi = (sti + sti) * rast;
   bry[1] = 1. / bry[0];
-  bry[2] = std::numeric_limits<double>::max();
+  bry[2] = DBL_MAX;
   s1r = cyr[0];
   s1i = cyi[0];
   s2r = cyr[1];
@@ -215,9 +213,9 @@ L30:
     if (iflag >= 3) {
       goto L90;
     }
-    str = std::abs(c2r);
-    sti = std::abs(c2i);
-    c2m = std::max(str, sti);
+    str = fabs(c2r);
+    sti = fabs(c2i);
+    c2m = MAX(str, sti);
     if (c2m <= ascle) {
       goto L90;
     }
@@ -280,4 +278,3 @@ L130:
   }
 }
 
-}  // namespace zbessel

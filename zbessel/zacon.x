@@ -1,14 +1,12 @@
 #pragma once
 #include "zbsubr.h"
 #include "zops.h"
-#include <algorithm>
-#include <cmath>
+//#include <algorithm>
+#include <math.h>
 
-namespace zbessel {
 
-template <class>
 void zacon(double zr, double zi, double fnu, int kode, int mr, int n,
-           double *__restrict__ yr, double *__restrict__ yi, int *__restrict__ nz, double rl, double fnul,
+           double *restrict yr, double *restrict yi, int *restrict nz, double rl, double fnul,
            double tol, double elim, double alim) {
   /* Initialized data */
 
@@ -71,7 +69,7 @@ void zacon(double zr, double zi, double fnu, int kode, int mr, int n,
   /* ----------------------------------------------------------------------- */
   /*     ANALYTIC CONTINUATION TO THE LEFT HALF PLANE FOR THE K FUNCTION */
   /* ----------------------------------------------------------------------- */
-  nn = std::min(2, n);
+  nn = MIN(2, n);
   zbknu(znr, zni, fnu, kode, nn, cyr, cyi, &nw, tol, elim, alim);
   if (nw != 0) {
     goto L90;
@@ -79,15 +77,15 @@ void zacon(double zr, double zi, double fnu, int kode, int mr, int n,
   s1r = cyr[0];
   s1i = cyi[0];
   fmr = (double)mr;
-  sgn = -std::copysign(pi, fmr);
+  sgn = -copysign(pi, fmr);
   csgnr = 0.;
   csgni = sgn;
   if (kode == 1) {
     goto L10;
   }
   yy = -zni;
-  cpn = std::cos(yy);
-  spn = std::sin(yy);
+  cpn = cos(yy);
+  spn = sin(yy);
   zmlt(csgnr, csgni, cpn, spn, &csgnr, &csgni);
 L10:
   /* ----------------------------------------------------------------------- */
@@ -96,8 +94,8 @@ L10:
   /* ----------------------------------------------------------------------- */
   inu = (int)fnu;
   arg = (fnu - inu) * sgn;
-  cpn = std::cos(arg);
-  spn = std::sin(arg);
+  cpn = cos(arg);
+  spn = sin(arg);
   cspnr = cpn;
   cspni = spn;
   if (inu % 2 == 0) {
@@ -111,7 +109,7 @@ L20:
   c1i = s1i;
   c2r = yr[1];
   c2i = yi[1];
-  ascle = std::numeric_limits<double>::min() * 1e3 / tol;
+  ascle = DBL_MIN * 1e3 / tol;
   if (kode == 1) {
     goto L30;
   }
@@ -174,7 +172,7 @@ L40:
   csrr[2] = cscl;
   bry[0] = ascle;
   bry[1] = 1. / ascle;
-  bry[2] = std::numeric_limits<double>::max();
+  bry[2] = DBL_MAX;
   as2 = zabs(s2r, s2i);
   kflag = 2;
   if (as2 > bry[0]) {
@@ -241,9 +239,9 @@ L60:
     if (kflag >= 3) {
       goto L80;
     }
-    ptr = std::fabs(c1r);
-    pti = std::fabs(c1i);
-    c1m = std::max(ptr, pti);
+    ptr = fabs(c1r);
+    pti = fabs(c1i);
+    c1m = MAX(ptr, pti);
     if (c1m <= bscle) {
       goto L80;
     }
@@ -268,4 +266,3 @@ L90:
   }
 }
 
-}  // namespace zbessel

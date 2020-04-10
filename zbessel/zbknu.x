@@ -1,16 +1,15 @@
 #pragma once
 #include "zbsubr.h"
 #include "zops.h"
-#include <limits>
-#include <algorithm>
-#include <cmath>
+#include <limits.h>
+//#include <algorithm>
+#include <math.h>
+#include <float.h>
 
-namespace zbessel {
 
-template <class>
-void zbknu(double zr, double zi, double fnu, int kode, int n, double *__restrict__ yr,
-           double *__restrict__ yi, int *__restrict__ nz, double tol, double elim, double alim) {
-  static const double r1m5 = std::log10(std::numeric_limits<double>::radix);
+void zbknu(double zr, double zi, double fnu, int kode, int n, double *restrict yr,
+           double *restrict yi, int *restrict nz, double tol, double elim, double alim) {
+  static const double r1m5 = log10(FLT_RADIX);
 
   /* Initialized data */
 
@@ -86,9 +85,9 @@ void zbknu(double zr, double zi, double fnu, int kode, int n, double *__restrict
   csrr[0] = crscr;
   csrr[1] = 1.;
   csrr[2] = csclr;
-  bry[0] = std::numeric_limits<double>::min() * 1e3 / tol;
+  bry[0] = DBL_MIN * 1e3 / tol;
   bry[1] = 1. / bry[0];
-  bry[2] = std::numeric_limits<double>::max();
+  bry[2] = DBL_MAX;
   *nz = 0;
   iflag = 0;
   koded = kode;
@@ -99,11 +98,11 @@ void zbknu(double zr, double zi, double fnu, int kode, int n, double *__restrict
   rzi = (sti + sti) * rcaz;
   inu = (int)(fnu + .5);
   dnu = fnu - inu;
-  if (std::fabs(dnu) == .5) {
+  if (fabs(dnu) == .5) {
     goto L110;
   }
   dnu2 = 0.;
-  if (std::fabs(dnu) > tol) {
+  if (fabs(dnu) > tol) {
     dnu2 = dnu * dnu;
   }
   if (caz > r1) {
@@ -121,7 +120,7 @@ void zbknu(double zr, double zi, double fnu, int kode, int n, double *__restrict
     goto L10;
   }
   fc = dnu * dpi;
-  fc /= std::sin(fc);
+  fc /= sin(fc);
   smur = cshr / dnu;
   smui = cshi / dnu;
 L10:
@@ -129,9 +128,9 @@ L10:
   /* ----------------------------------------------------------------------- */
   /*     GAM(1-Z)*GAM(1+Z)=PI*Z/SIN(PI*Z), T1=1/GAM(1-DNU), T2=1/GAM(1+DNU) */
   /* ----------------------------------------------------------------------- */
-  t2 = std::exp(-std::lgamma(a2));
+  t2 = exp(-lgamma(a2));
   t1 = 1. / (t2 * fc);
-  if (std::fabs(dnu) > .1) {
+  if (fabs(dnu) > .1) {
     goto L40;
   }
   /* ----------------------------------------------------------------------- */
@@ -143,7 +142,7 @@ L10:
     ak *= dnu2;
     tm = cc[k - 1] * ak;
     s += tm;
-    if (std::fabs(tm) < tol) {
+    if (fabs(tm) < tol) {
       goto L30;
     }
     /* L20: */
@@ -254,7 +253,7 @@ L90:
 L100:
   kflag = 2;
   a1 = fnu + 1.;
-  ak = a1 * std::fabs(smur);
+  ak = a1 * fabs(smur);
   if (ak > alim) {
     kflag = 3;
   }
@@ -288,23 +287,23 @@ L110:
     goto L290;
   }
   /*     BLANK LINE */
-  str = std::exp(-zr) * cssr[kflag - 1];
-  sti = -str * std::sin(zi);
-  str *= std::cos(zi);
+  str = exp(-zr) * cssr[kflag - 1];
+  sti = -str * sin(zi);
+  str *= cos(zi);
   zmlt(coefr, coefi, str, sti, &coefr, &coefi);
 L120:
-  if (std::fabs(dnu) == .5) {
+  if (fabs(dnu) == .5) {
     goto L300;
   }
   /* ----------------------------------------------------------------------- */
   /*     MILLER ALGORITHM FOR ABS(Z).GT.R1 */
   /* ----------------------------------------------------------------------- */
-  ak = std::cos(dpi * dnu);
-  ak = std::fabs(ak);
+  ak = cos(dpi * dnu);
+  ak = fabs(ak);
   if (ak == 0.) {
     goto L300;
   }
-  fhs = std::fabs(.25 - dnu2);
+  fhs = fabs(.25 - dnu2);
   if (fhs == 0.) {
     goto L300;
   }
@@ -314,10 +313,10 @@ L120:
   /*     12.LE.E.LE.60. E IS COMPUTED FROM 2**(-E)=B**(1-I1MACH(14))= */
   /*     TOL WHERE B IS THE BASE OF THE ARITHMETIC. */
   /* ----------------------------------------------------------------------- */
-  t1 = (double)(std::numeric_limits<double>::digits - 1);
+  t1 = (double)(DBL_MANT_DIG - 1);
   t1 = t1 * r1m5 * 3.321928094;
-  t1 = std::max(t1, 12.);
-  t1 = std::min(t1, 60.);
+  t1 = MAX(t1, 12.);
+  t1 = MIN(t1, 60.);
   t2 = tth * t1 - 6.;
   if (zr != 0.) {
     goto L130;
@@ -325,8 +324,8 @@ L120:
   t1 = hpi;
   goto L140;
 L130:
-  t1 = std::atan(zi / zr);
-  t1 = std::fabs(t1);
+  t1 = atan(zi / zr);
+  t1 = fabs(t1);
 L140:
   if (t2 > caz) {
     goto L170;
@@ -353,7 +352,7 @@ L140:
     fks = fks + fk + fk + ctwor;
     fhs = fhs + fk + fk;
     fk += 1.;
-    str = std::fabs(p2r) * fk;
+    str = fabs(p2r) * fk;
     if (etest < str) {
       goto L160;
     }
@@ -361,18 +360,18 @@ L140:
   }
   goto L310;
 L160:
-  fk += spi * t1 * std::sqrt(t2 / caz);
-  fhs = std::fabs(.25 - dnu2);
+  fk += spi * t1 * sqrt(t2 / caz);
+  fhs = fabs(.25 - dnu2);
   goto L180;
 L170:
   /* ----------------------------------------------------------------------- */
   /*     COMPUTE BACKWARD INDEX K FOR ABS(Z).LT.R2 */
   /* ----------------------------------------------------------------------- */
-  a2 = std::sqrt(caz);
-  ak = fpi * ak / (tol * std::sqrt(a2));
+  a2 = sqrt(caz);
+  ak = fpi * ak / (tol * sqrt(a2));
   aa = t1 * 3. / (caz + 1.);
   bb = t1 * 14.7 / (caz + 28.);
-  ak = (std::log(ak) + caz * std::cos(aa) / (caz * .008 + 1.)) / std::cos(bb);
+  ak = (log(ak) + caz * cos(aa) / (caz * .008 + 1.)) / cos(bb);
   fk = ak * .12125 * ak / caz + 1.5;
 L180:
   /* ----------------------------------------------------------------------- */
@@ -490,9 +489,9 @@ L225:
     }
     p2r = s2r * p1r;
     p2i = s2i * p1r;
-    str = std::fabs(p2r);
-    sti = std::fabs(p2i);
-    p2m = std::max(str, sti);
+    str = fabs(p2r);
+    sti = fabs(p2i);
+    p2m = MAX(str, sti);
     if (p2m <= ascle) {
       goto L230;
     }
@@ -551,9 +550,9 @@ L250:
     if (kflag >= 3) {
       goto L260;
     }
-    str = std::fabs(p2r);
-    sti = std::fabs(p2i);
-    p2m = std::max(str, sti);
+    str = fabs(p2r);
+    sti = fabs(p2i);
+    p2m = MAX(str, sti);
     if (p2m <= ascle) {
       goto L260;
     }
@@ -577,7 +576,7 @@ L250:
 /* ----------------------------------------------------------------------- */
 L261:
   helim = elim * .5;
-  elm = std::exp(-elim);
+  elm = exp(-elim);
   celmr = elm;
   ascle = bry[0];
   zdr = zr;
@@ -594,7 +593,7 @@ L261:
     ckr += rzr;
     cki += rzi;
     as = zabs(s2r, s2i);
-    alas = std::log(as);
+    alas = log(as);
     p2r = -zdr + alas;
     if (p2r < -elim) {
       goto L263;
@@ -602,9 +601,9 @@ L261:
     zlog(s2r, s2i, &str, &sti);
     p2r = -zdr + str;
     p2i = -zdi + sti;
-    p2m = std::exp(p2r) / tol;
-    p1r = p2m * std::cos(p2i);
-    p1i = p2m * std::sin(p2i);
+    p2m = exp(p2r) / tol;
+    p1r = p2m * cos(p2i);
+    p1i = p2m * sin(p2i);
     zuchk(p1r, p1i, &nw, ascle, tol);
     if (nw != 0) {
       goto L263;
@@ -709,4 +708,3 @@ L310:
   *nz = -2;
 }
 
-}  // namespace zbessel

@@ -1,14 +1,12 @@
 #pragma once
 #include "zbsubr.h"
 #include "zops.h"
-#include <limits>
-#include <cmath>
+#include <limits.h>
+#include <math.h>
 
-namespace zbessel {
 
-template <class>
 void zuoik(double zr, double zi, double fnu, int kode, int ikflg, int n,
-           double *__restrict__ yr, double *__restrict__ yi, int *__restrict__ nuf, double tol, double elim,
+           double *restrict yr, double *restrict yi, int *restrict nuf, double tol, double elim,
            double alim) {
   /* Initialized data */
 
@@ -83,19 +81,19 @@ void zuoik(double zr, double zi, double fnu, int kode, int ikflg, int n,
 L10:
   zbr = zrr;
   zbi = zri;
-  ax = std::abs(zr) * 1.7321;
-  ay = std::abs(zi);
+  ax = fabs(zr) * 1.7321;
+  ay = fabs(zi);
   iform = 1;
   if (ay > ax) {
     iform = 2;
   }
-  gnu = std::max(fnu, 1.);
+  gnu = MAX(fnu, 1.);
   if (ikflg == 1) {
     goto L20;
   }
   fnn = (double)nn;
   gnn = fnu + fnn - 1.;
-  gnu = std::max(gnn, fnn);
+  gnu = MAX(gnn, fnn);
 L20:
   /* ----------------------------------------------------------------------- */
   /*     ONLY THE MAGNITUDE OF ARG AND PHI ARE NEEDED ALONG WITH THE */
@@ -148,9 +146,9 @@ L70:
   if (rcz < alim) {
     goto L80;
   }
-  rcz += std::log(aphi);
+  rcz += log(aphi);
   if (iform == 2) {
-    rcz = rcz - std::log(aarg) * .25 - aic;
+    rcz = rcz - log(aarg) * .25 - aic;
   }
   if (rcz > elim) {
     goto L210;
@@ -166,9 +164,9 @@ L80:
   if (rcz > -alim) {
     goto L130;
   }
-  rcz += std::log(aphi);
+  rcz += log(aphi);
   if (iform == 2) {
-    rcz = rcz - std::log(aarg) * .25 - aic;
+    rcz = rcz - log(aarg) * .25 - aic;
   }
   if (rcz > -elim) {
     goto L110;
@@ -182,7 +180,7 @@ L90:
   *nuf = nn;
   return;
 L110:
-  ascle = std::numeric_limits<double>::min() * 1e3 / tol;
+  ascle = DBL_MIN * 1e3 / tol;
   zlog(phir, phii, &str, &sti);
   czr += str;
   czi += sti;
@@ -193,10 +191,10 @@ L110:
   czr = czr - str * .25 - aic;
   czi -= sti * .25;
 L120:
-  ax = std::exp(rcz) / tol;
+  ax = exp(rcz) / tol;
   ay = czi;
-  czr = ax * std::cos(ay);
-  czi = ax * std::sin(ay);
+  czr = ax * cos(ay);
+  czi = ax * sin(ay);
   zuchk(czr, czi, &nw, ascle, tol);
   if (nw != 0) {
     goto L90;
@@ -243,9 +241,9 @@ L170:
   if (rcz > -alim) {
     return;
   }
-  rcz += std::log(aphi);
+  rcz += log(aphi);
   if (iform == 2) {
-    rcz = rcz - std::log(aarg) * .25 - aic;
+    rcz = rcz - log(aarg) * .25 - aic;
   }
   if (rcz > -elim) {
     goto L190;
@@ -260,7 +258,7 @@ L180:
   }
   goto L140;
 L190:
-  ascle = std::numeric_limits<double>::min() * 1e3 / tol;
+  ascle = DBL_MIN * 1e3 / tol;
   zlog(phir, phii, &str, &sti);
   czr += str;
   czi += sti;
@@ -271,10 +269,10 @@ L190:
   czr = czr - str * .25 - aic;
   czi -= sti * .25;
 L200:
-  ax = std::exp(rcz) / tol;
+  ax = exp(rcz) / tol;
   ay = czi;
-  czr = ax * std::cos(ay);
-  czi = ax * std::sin(ay);
+  czr = ax * cos(ay);
+  czi = ax * sin(ay);
   zuchk(czr, czi, &nw, ascle, tol);
   if (nw != 0) {
     goto L180;
@@ -285,4 +283,3 @@ L210:
   return;
 }
 
-}  // namespace zbessel

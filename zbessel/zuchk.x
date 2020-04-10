@@ -1,12 +1,10 @@
 #pragma once
 #include "zbsubr.h"
-#include <algorithm>
-#include <cmath>
+//#include <algorithm>
+#include <math.h>
 
-namespace zbessel {
 
-template <class>
-void zuchk(double yr, double yi, int *__restrict__ nz, double ascle, double tol) {
+void zuchk(double yr, double yi, int *restrict nz, double ascle, double tol) {
   double wi, ss, st, wr;
 
   /* ***BEGIN PROLOGUE  ZUCHK */
@@ -36,15 +34,14 @@ void zuchk(double yr, double yi, int *__restrict__ nz, double ascle, double tol)
   /*     COMPLEX Y */
   /* ***FIRST EXECUTABLE STATEMENT  ZUCHK */
   *nz = 0;
-  wr = std::fabs(yr);
-  wi = std::fabs(yi);
-  st = std::min(wr, wi);
+  wr = fabs(yr);
+  wi = fabs(yi);
+  st = MIN(wr, wi);
   if (st > ascle)
     return;
-  ss = std::max(wr, wi);
+  ss = MAX(wr, wi);
   st /= tol;
   if (ss < st)
     *nz = 1;
 }
 
-}  // namespace zbessel

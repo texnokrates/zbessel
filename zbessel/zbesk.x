@@ -1,16 +1,14 @@
 #pragma once
 #include "zbsubr.h"
 #include "zops.h"
-#include <limits>
-#include <algorithm>
-#include <cmath>
+#include <limits.h>
+//#include <algorithm>
+#include <math.h>
 
-namespace zbessel {
 
-template <class>
-int zbesk(double zr, double zi, double fnu, int kode, int n, double *__restrict__ cyr,
-          double *__restrict__ cyi, int *__restrict__ nz) {
-  static const double r1m5 = std::log10(std::numeric_limits<double>::radix);
+int zbesk(double zr, double zi, double fnu, int kode, int n, double *restrict cyr,
+          double *restrict cyi, int *restrict nz) {
+  static const double r1m5 = log10(FLT_RADIX);
 
   /* Local variables */
   int ierr;
@@ -215,18 +213,18 @@ int zbesk(double zr, double zi, double fnu, int kode, int n, double *__restrict_
   /*     FNUL IS THE LOWER BOUNDARY OF THE ASYMPTOTIC SERIES FOR LARGE FNU */
   /* ----------------------------------------------------------------------- */
   /* Computing MAX */
-  tol = std::max(std::numeric_limits<double>::epsilon(), 1e-18);
-  k1 = std::numeric_limits<double>::min_exponent;
-  k2 = std::numeric_limits<double>::max_exponent;
+  tol = MAX(DBL_EPSILON, 1e-18);
+  k1 = DBL_MIN_EXP;
+  k2 = DBL_MAX_EXP;
   /* Computing MIN */
-  k = std::min(std::abs(k1), std::abs(k2));
+  k = MIN(abs(k1), abs(k2));
   elim = (k * r1m5 - 3.) * 2.303;
-  k1 = std::numeric_limits<double>::digits - 1;
+  k1 = DBL_MANT_DIG - 1;
   aa = r1m5 * k1;
-  dig = std::min(aa, 18.);
+  dig = MIN(aa, 18.);
   aa *= 2.303;
   /* Computing MAX */
-  alim = elim + std::max(-aa, -41.45);
+  alim = elim + MAX(-aa, -41.45);
   fnul = (dig - 3.) * 6. + 10.;
   rl = dig * 1.2 + 3.;
   /* ----------------------------------------------------------------------- */
@@ -235,15 +233,15 @@ int zbesk(double zr, double zi, double fnu, int kode, int n, double *__restrict_
   az = zabs(zr, zi);
   fn = fnu + (nn - 1);
   aa = .5 / tol;
-  bb = std::numeric_limits<int>::max() * .5;
-  aa = std::min(aa, bb);
+  bb = INT_MAX * .5;
+  aa = MIN(aa, bb);
   if (az > aa) {
     goto L260;
   }
   if (fn > aa) {
     goto L260;
   }
-  aa = std::sqrt(aa);
+  aa = sqrt(aa);
   if (az > aa) {
     ierr = 3;
   }
@@ -254,7 +252,7 @@ int zbesk(double zr, double zi, double fnu, int kode, int n, double *__restrict_
   /*     OVERFLOW TEST ON THE LAST MEMBER OF THE SEQUENCE */
   /* ----------------------------------------------------------------------- */
   /*     UFL = EXP(-ELIM) */
-  ufl = std::numeric_limits<double>::min() * 1e3;
+  ufl = DBL_MIN * 1e3;
   if (az < ufl) {
     goto L180;
   }
@@ -271,7 +269,7 @@ int zbesk(double zr, double zi, double fnu, int kode, int n, double *__restrict_
     goto L60;
   }
   arg = az * .5;
-  aln = -fn * std::log(arg);
+  aln = -fn * log(arg);
   if (aln > elim) {
     goto L180;
   }
@@ -363,4 +361,3 @@ L260:
   return ierr;
 }
 
-}  // namespace zbessel

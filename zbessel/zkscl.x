@@ -1,14 +1,12 @@
 #pragma once
 #include "zbsubr.h"
 #include "zops.h"
-#include <algorithm>
-#include <cmath>
+//#include <algorithm>
+#include <math.h>
 
-namespace zbessel {
 
-template <class>
-void zkscl(double zrr, double zri, double fnu, int n, double *__restrict__ yr,
-           double *__restrict__ yi, int *__restrict__ nz, double rzr, double rzi, double ascle,
+void zkscl(double zrr, double zri, double fnu, int n, double *restrict yr,
+           double *restrict yi, int *restrict nz, double rzr, double rzi, double ascle,
            double tol, double elim) {
   /* Local variables */
   int i__, ic;
@@ -46,14 +44,14 @@ void zkscl(double zrr, double zri, double fnu, int n, double *__restrict__ yr,
   /* ***FIRST EXECUTABLE STATEMENT  ZKSCL */
   *nz = 0;
   ic = 0;
-  nn = std::min(2, n);
+  nn = MIN(2, n);
   for (i__ = 1; i__ <= nn; ++i__) {
     s1r = yr[i__];
     s1i = yi[i__];
     cyr[i__ - 1] = s1r;
     cyi[i__ - 1] = s1i;
     as = zabs(s1r, s1i);
-    acs = -zrr + std::log(as);
+    acs = -zrr + log(as);
     ++(*nz);
     yr[i__] = 0.;
     yi[i__] = 0.;
@@ -63,9 +61,9 @@ void zkscl(double zrr, double zri, double fnu, int n, double *__restrict__ yr,
     zlog(s1r, s1i, &csr, &csi);
     csr -= zrr;
     csi -= zri;
-    str = std::exp(csr) / tol;
-    csr = str * std::cos(csi);
-    csi = str * std::sin(csi);
+    str = exp(csr) / tol;
+    csr = str * cos(csi);
+    csi = str * sin(csi);
     zuchk(csr, csi, &nw, ascle, tol);
     if (nw != 0) {
       goto L10;
@@ -100,7 +98,7 @@ L20:
   s2r = cyr[1];
   s2i = cyi[1];
   helim = elim * .5;
-  elm = std::exp(-elim);
+  elm = exp(-elim);
   celmr = elm;
   zdr = zrr;
   zdi = zri;
@@ -119,7 +117,7 @@ L20:
     ckr += rzr;
     cki += rzi;
     as = zabs(s2r, s2i);
-    alas = std::log(as);
+    alas = log(as);
     acs = -zdr + alas;
     ++(*nz);
     yr[i__] = 0.;
@@ -130,9 +128,9 @@ L20:
     zlog(s2r, s2i, &csr, &csi);
     csr -= zdr;
     csi -= zdi;
-    str = std::exp(csr) / tol;
-    csr = str * std::cos(csi);
-    csi = str * std::sin(csi);
+    str = exp(csr) / tol;
+    csr = str * cos(csi);
+    csi = str * sin(csi);
     zuchk(csr, csi, &nw, ascle, tol);
     if (nw != 0) {
       goto L25;
@@ -171,4 +169,3 @@ L45:
   }
 }
 
-}  // namespace zbessel

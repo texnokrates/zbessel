@@ -1,12 +1,10 @@
 #pragma once
 #include "zbsubr.h"
-#include <cmath>
+#include <math.h>
 
-namespace zbessel {
 
-template <class>
-void zshch(double zr, double zi, double *__restrict__ cshr, double *__restrict__ cshi, double *__restrict__ cchr,
-           double *__restrict__ cchi) {
+void zshch(double zr, double zi, double *restrict cshr, double *restrict cshi, double *restrict cchr,
+           double *restrict cchi) {
   /* Local variables */
   double ch, cn, sh, sn;
 
@@ -29,14 +27,13 @@ void zshch(double zr, double zi, double *__restrict__ cshr, double *__restrict__
   /* ***END PROLOGUE  ZSHCH */
 
   /* ***FIRST EXECUTABLE STATEMENT  ZSHCH */
-  sh = std::sinh(zr);
-  ch = std::cosh(zr);
-  sn = std::sin(zi);
-  cn = std::cos(zi);
+  sh = sinh(zr);
+  ch = cosh(zr);
+  sn = sin(zi);
+  cn = cos(zi);
   *cshr = sh * cn;
   *cshi = ch * sn;
   *cchr = ch * cn;
   *cchi = sh * sn;
 }
 
-}  // namespace zbessel

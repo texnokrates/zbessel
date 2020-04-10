@@ -1,15 +1,13 @@
 #pragma once
 #include "zbsubr.h"
 #include "zops.h"
-#include <algorithm>
-#include <cmath>
-#include <limits>
+//#include <algorithm>
+#include <math.h>
+#include <limits.h>
 
-namespace zbessel {
 
-template <class>
-int zbiry(double zr, double zi, int id, int kode, double *__restrict__ bir, double *__restrict__ bii) {
-  static const double r1m5 = std::log10(std::numeric_limits<double>::radix);
+int zbiry(double zr, double zi, int id, int kode, double *restrict bir, double *restrict bii) {
+  static const double r1m5 = log10(FLT_RADIX);
 
   /* Initialized data */
 
@@ -178,7 +176,7 @@ int zbiry(double zr, double zi, int id, int kode, double *__restrict__ bir, doub
   }
   az = zabs(zr, zi);
   /* Computing MAX */
-  tol = std::max(std::numeric_limits<double>::epsilon(), 1e-18);
+  tol = MAX(DBL_EPSILON, 1e-18);
   fid = (double)id;
   if (az > 1.f) {
     goto L70;
@@ -213,7 +211,7 @@ int zbiry(double zr, double zi, int id, int kode, double *__restrict__ bir, doub
   dk = fid + 3. + fid;
   d1 = ak * dk;
   d2 = bk * ck;
-  ad = std::min(d1, d2);
+  ad = MIN(d1, d2);
   ak = fid * 9. + 24.;
   bk = 30. - fid * 9.;
   for (k = 1; k <= 25; ++k) {
@@ -230,7 +228,7 @@ int zbiry(double zr, double zi, int id, int kode, double *__restrict__ bir, doub
     atrm = atrm * az3 / ad;
     d1 += ak;
     d2 += bk;
-    ad = std::min(d1, d2);
+    ad = MIN(d1, d2);
     if (atrm < tol * ad) {
       goto L40;
     }
@@ -251,8 +249,8 @@ L40:
   ztar = tth * (zr * str - zi * sti);
   ztai = tth * (zr * sti + zi * str);
   aa = ztar;
-  aa = -std::fabs(aa);
-  eaa = std::exp(aa);
+  aa = -fabs(aa);
+  eaa = exp(aa);
   *bir *= eaa;
   *bii *= eaa;
   return ierr;
@@ -275,8 +273,8 @@ L60:
   ztar = tth * (zr * str - zi * sti);
   ztai = tth * (zr * sti + zi * str);
   aa = ztar;
-  aa = -std::fabs(aa);
-  eaa = std::exp(aa);
+  aa = -fabs(aa);
+  eaa = exp(aa);
   *bir *= eaa;
   *bii *= eaa;
   return ierr;
@@ -296,30 +294,30 @@ L70:
   /*     DIG = NUMBER OF BASE 10 DIGITS IN TOL = 10**(-DIG). */
   /*     FNUL IS THE LOWER BOUNDARY OF THE ASYMPTOTIC SERIES FOR LARGE FNU. */
   /* ----------------------------------------------------------------------- */
-  k1 = std::numeric_limits<double>::min_exponent;
-  k2 = std::numeric_limits<double>::max_exponent;
+  k1 = DBL_MIN_EXP;
+  k2 = DBL_MAX_EXP;
   /* Computing MIN */
-  k = std::min(std::abs(k1), std::abs(k2));
+  k = MIN(abs(k1), abs(k2));
   elim = (k * r1m5 - 3.) * 2.303;
-  k1 = std::numeric_limits<double>::digits - 1;
+  k1 = DBL_MANT_DIG - 1;
   aa = r1m5 * k1;
-  dig = std::min(aa, 18.);
+  dig = MIN(aa, 18.);
   aa *= 2.303;
   /* Computing MAX */
-  alim = elim + std::max(-aa, -41.45);
+  alim = elim + MAX(-aa, -41.45);
   rl = dig * 1.2 + 3.;
   fnul = (dig - 3.) * 6. + 10.;
   /* ----------------------------------------------------------------------- */
   /*     TEST FOR RANGE */
   /* ----------------------------------------------------------------------- */
   aa = .5 / tol;
-  bb = std::numeric_limits<int>::max() * .5;
-  aa = std::min(aa, bb);
-  aa = std::pow(aa, tth);
+  bb = INT_MAX * .5;
+  aa = MIN(aa, bb);
+  aa = pow(aa, tth);
   if (az > aa) {
     goto L260;
   }
-  aa = std::sqrt(aa);
+  aa = sqrt(aa);
   if (az > aa) {
     ierr = 3;
   }
@@ -335,7 +333,7 @@ L70:
     goto L80;
   }
   bk = ztar;
-  ck = -std::fabs(bk);
+  ck = -fabs(bk);
   ztar = ck;
   ztai = ak;
 L80:
@@ -352,11 +350,11 @@ L90:
   /* ----------------------------------------------------------------------- */
   /*     OVERFLOW TEST */
   /* ----------------------------------------------------------------------- */
-  bb = std::fabs(aa);
+  bb = fabs(aa);
   if (bb < alim) {
     goto L100;
   }
-  bb += std::log(az) * .25;
+  bb += log(az) * .25;
   sfac = tol;
   if (bb > elim) {
     goto L190;
@@ -383,8 +381,8 @@ L110:
   }
   aa = fmr * fnu;
   z3r = sfac;
-  str = std::cos(aa);
-  sti = std::sin(aa);
+  str = cos(aa);
+  sti = sin(aa);
   s1r = (str * cyr[0] - sti * cyi[0]) * z3r;
   s1i = (str * cyi[0] + sti * cyr[0]) * z3r;
   fnu = (2. - fid) / 3.;
@@ -400,8 +398,8 @@ L110:
   s2r = (fnu + fnu) * str + cyr[1];
   s2i = (fnu + fnu) * sti + cyi[1];
   aa = fmr * (fnu - 1.);
-  str = std::cos(aa);
-  sti = std::sin(aa);
+  str = cos(aa);
+  sti = sin(aa);
   s1r = coef * (s1r + s2r * str - s2i * sti);
   s1i = coef * (s1i + s2r * sti + s2i * str);
   if (id == 1) {
@@ -442,4 +440,3 @@ L260:
   return ierr;
 }
 
-}  // namespace zbessel

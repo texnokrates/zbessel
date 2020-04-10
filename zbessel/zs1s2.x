@@ -1,14 +1,12 @@
 #pragma once
 #include "zbsubr.h"
 #include "zops.h"
-#include <algorithm>
-#include <cmath>
+//#include <algorithm>
+#include <math.h>
 
-namespace zbessel {
 
-template <class>
-void zs1s2(double zrr, double zri, double *__restrict__ s1r, double *__restrict__ s1i, double *__restrict__ s2r,
-           double *__restrict__ s2i, int *__restrict__ nz, double ascle, double alim, int *__restrict__ iuf) {
+void zs1s2(double zrr, double zri, double *restrict s1r, double *restrict s1i, double *restrict s2r,
+           double *restrict s2i, int *restrict nz, double ascle, double alim, int *restrict iuf) {
   /* Local variables */
   double aa, c1i, as1, as2, c1r, aln, s1di, s1dr;
 
@@ -46,7 +44,7 @@ void zs1s2(double zrr, double zri, double *__restrict__ s1r, double *__restrict_
   if (as1 == 0.) {
     goto L10;
   }
-  aln = -zrr - zrr + std::log(as1);
+  aln = -zrr - zrr + log(as1);
   s1dr = *s1r;
   s1di = *s1i;
   *s1r = 0.;
@@ -62,7 +60,7 @@ void zs1s2(double zrr, double zri, double *__restrict__ s1r, double *__restrict_
   as1 = zabs(*s1r, *s1i);
   ++(*iuf);
 L10:
-  aa = std::max(as1, as2);
+  aa = MAX(as1, as2);
   if (aa > ascle) {
     return;
   }
@@ -74,4 +72,3 @@ L10:
   *iuf = 0;
 }
 
-}  // namespace zbessel

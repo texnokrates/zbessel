@@ -1,14 +1,12 @@
 #pragma once
 #include "zbsubr.h"
 #include "zops.h"
-#include <algorithm>
-#include <cmath>
+//#include <algorithm>
+#include <math.h>
 
-namespace zbessel {
 
-template <class>
-void zmlri(double zr, double zi, double fnu, int kode, int n, double *__restrict__ yr,
-           double *__restrict__ yi, int *__restrict__ nz, double tol) {
+void zmlri(double zr, double zi, double fnu, int kode, int n, double *restrict yr,
+           double *restrict yi, int *restrict nz, double tol) {
   /* Local variables */
   int i__, k, m;
   double ak, bk, ap, at;
@@ -48,7 +46,7 @@ void zmlri(double zr, double zi, double fnu, int kode, int n, double *__restrict
 
   /* Function Body */
   /* ***FIRST EXECUTABLE STATEMENT  ZMLRI */
-  scle = std::numeric_limits<double>::min() / tol;
+  scle = DBL_MIN / tol;
   *nz = 0;
   az = zabs(zr, zi);
   iaz = (int)az;
@@ -67,7 +65,7 @@ void zmlri(double zr, double zi, double fnu, int kode, int n, double *__restrict
   p2r = 1.;
   p2i = 0.;
   ack = (at + 1.) * raz;
-  rho = ack + std::sqrt(ack * ack - 1.);
+  rho = ack + sqrt(ack * ack - 1.);
   rho2 = rho * rho;
   tst = (rho2 + rho2) / ((rho2 - 1.) * (rho - 1.));
   tst /= tol;
@@ -111,7 +109,7 @@ L20:
   ckr = str * at * raz;
   cki = sti * at * raz;
   ack = at * raz;
-  tst = std::sqrt(ack / tol);
+  tst = sqrt(ack / tol);
   itime = 1;
   for (k = 1; k <= 80; ++k) {
     ptr = p2r;
@@ -130,10 +128,10 @@ L20:
       goto L40;
     }
     ack = zabs(ckr, cki);
-    flam = ack + std::sqrt(ack * ack - 1.);
+    flam = ack + sqrt(ack * ack - 1.);
     fkap = ap / zabs(p1r, p1i);
-    rho = std::min(flam, fkap);
-    tst *= std::sqrt(rho / (rho * rho - 1.));
+    rho = MIN(flam, fkap);
+    tst *= sqrt(rho / (rho * rho - 1.));
     itime = 2;
   L30:;
   }
@@ -144,7 +142,7 @@ L40:
   /* ----------------------------------------------------------------------- */
   ++k;
   /* Computing MAX */
-  kk = std::max(i__ + iaz, k + inu);
+  kk = MAX(i__ + iaz, k + inu);
   fkk = (double)kk;
   p1r = 0.;
   p1i = 0.;
@@ -155,8 +153,8 @@ L40:
   p2i = 0.;
   fnf = fnu - ifnu;
   tfnf = fnf + fnf;
-  bk = std::lgamma(fkk + tfnf + 1.) - std::lgamma(fkk + 1.) - std::lgamma(tfnf + 1.);
-  bk = std::exp(bk);
+  bk = lgamma(fkk + tfnf + 1.) - lgamma(fkk + 1.) - lgamma(tfnf + 1.);
+  bk = exp(bk);
   sumr = 0.;
   sumi = 0.;
   km = kk - inu;
@@ -226,7 +224,7 @@ L90:
   zlog(rzr, rzi, &str, &sti);
   p1r = -fnf * str + ptr;
   p1i = -fnf * sti + pti;
-  ap = std::lgamma(fnf + 1.);
+  ap = lgamma(fnf + 1.);
   ptr = p1r - ap;
   pti = p1i;
   /* ----------------------------------------------------------------------- */
@@ -254,4 +252,3 @@ L110:
   *nz = -2;
 }
 
-}  // namespace zbessel

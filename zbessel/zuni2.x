@@ -1,15 +1,13 @@
 #pragma once
 #include "zbsubr.h"
 #include "zops.h"
-#include <limits>
-#include <algorithm>
-#include <cmath>
+#include <limits.h>
+//#include <algorithm>
+#include <math.h>
 
-namespace zbessel {
 
-template <class>
-void zuni2(double zr, double zi, double fnu, int kode, int n, double *__restrict__ yr,
-           double *__restrict__ yi, int *__restrict__ nz, int *__restrict__ nlast, double fnul, double tol,
+void zuni2(double zr, double zi, double fnu, int kode, int n, double *restrict yr,
+           double *restrict yi, int *restrict nz, int *restrict nlast, double fnul, double tol,
            double elim, double alim) {
   /* Initialized data */
 
@@ -84,7 +82,7 @@ void zuni2(double zr, double zi, double fnu, int kode, int n, double *__restrict
   csrr[0] = crsc;
   csrr[1] = 1.;
   csrr[2] = cscl;
-  bry[0] = std::numeric_limits<double>::min() * 1e3 / tol;
+  bry[0] = DBL_MIN * 1e3 / tol;
   /* ----------------------------------------------------------------------- */
   /*     ZN IS IN THE RIGHT HALF PLANE AFTER ROTATION BY CI OR -CI */
   /* ----------------------------------------------------------------------- */
@@ -95,8 +93,8 @@ void zuni2(double zr, double zi, double fnu, int kode, int n, double *__restrict
   cidi = -1.;
   inu = (int)fnu;
   ang = hpi * (fnu - inu);
-  c2r = std::cos(ang);
-  c2i = std::sin(ang);
+  c2r = cos(ang);
+  c2i = sin(ang);
   car = c2r;
   sar = c2i;
   in = inu + n - 1;
@@ -115,7 +113,7 @@ L10:
   /* ----------------------------------------------------------------------- */
   /*     CHECK FOR UNDERFLOW AND OVERFLOW ON FIRST MEMBER */
   /* ----------------------------------------------------------------------- */
-  fn = std::max(fnu, 1.);
+  fn = MAX(fnu, 1.);
   zunhj(znr, zni, fn, 1, tol, &phir, &phii, &argr, &argi, &zeta1r,
         &zeta1i, &zeta2r, &zeta2i, &asumr, &asumi, &bsumr, &bsumi);
   if (kode == 1) {
@@ -134,11 +132,11 @@ L20:
   s1i = -zeta1i + zeta2i;
 L30:
   rs1 = s1r;
-  if (std::fabs(rs1) > elim) {
+  if (fabs(rs1) > elim) {
     goto L150;
   }
 L40:
-  nn = std::min(2, nd);
+  nn = MIN(2, nd);
   for (i__ = 1; i__ <= nn; ++i__) {
     fn = fnu + (nd - i__);
     zunhj(znr, zni, fn, 0, tol, &phir, &phii, &argr, &argi, &zeta1r,
@@ -152,7 +150,7 @@ L40:
     str = str * rast * rast;
     sti = -sti * rast * rast;
     s1r = -zeta1r + str;
-    s1i = -zeta1i + sti + std::fabs(zi);
+    s1i = -zeta1i + sti + fabs(zi);
     goto L60;
   L50:
     s1r = -zeta1r + zeta2r;
@@ -164,13 +162,13 @@ L40:
     /* -----------------------------------------------------------------------
      */
     rs1 = s1r;
-    if (std::fabs(rs1) > elim) {
+    if (fabs(rs1) > elim) {
       goto L120;
     }
     if (i__ == 1) {
       iflag = 2;
     }
-    if (std::fabs(rs1) < alim) {
+    if (fabs(rs1) < alim) {
       goto L70;
     }
     /* -----------------------------------------------------------------------
@@ -182,8 +180,8 @@ L40:
      */
     aphi = zabs(phir, phii);
     aarg = zabs(argr, argi);
-    rs1 = rs1 + std::log(aphi) - std::log(aarg) * .25 - aic;
-    if (std::fabs(rs1) > elim) {
+    rs1 = rs1 + log(aphi) - log(aarg) * .25 - aic;
+    if (fabs(rs1) > elim) {
       goto L120;
     }
     if (i__ == 1) {
@@ -210,9 +208,9 @@ L40:
     sti += air * asumi + aii * asumr;
     s2r = phir * str - phii * sti;
     s2i = phir * sti + phii * str;
-    str = std::exp(s1r) * cssr[iflag - 1];
-    s1r = str * std::cos(s1i);
-    s1i = str * std::sin(s1i);
+    str = exp(s1r) * cssr[iflag - 1];
+    s1r = str * cos(s1i);
+    s1i = str * sin(s1i);
     str = s2r * s1r - s2i * s1i;
     s2i = s2r * s1i + s2i * s1r;
     s2r = str;
@@ -249,7 +247,7 @@ L40:
   rzr = (str + str) * raz;
   rzi = (sti + sti) * raz;
   bry[1] = 1. / bry[0];
-  bry[2] = std::numeric_limits<double>::max();
+  bry[2] = DBL_MAX;
   s1r = cyr[0];
   s1i = cyi[0];
   s2r = cyr[1];
@@ -274,9 +272,9 @@ L40:
     if (iflag >= 3) {
       goto L100;
     }
-    str = std::fabs(c2r);
-    sti = std::fabs(c2i);
-    c2m = std::max(str, sti);
+    str = fabs(c2r);
+    sti = fabs(c2i);
+    c2m = MAX(str, sti);
     if (c2m <= ascle) {
       goto L100;
     }
@@ -357,4 +355,3 @@ L150:
   }
 }
 
-}  // namespace zbessel

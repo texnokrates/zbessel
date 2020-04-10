@@ -1,15 +1,13 @@
 #pragma once
 #include "zbsubr.h"
 #include "zops.h"
-#include <limits>
-#include <algorithm>
-#include <cmath>
+#include <limits.h>
+//#include <algorithm>
+#include <math.h>
 
-namespace zbessel {
 
-template <class>
 void zunk2(double zr, double zi, double fnu, int kode, int mr, int n,
-           double *__restrict__ yr, double *__restrict__ yi, int *__restrict__ nz, double tol, double elim,
+           double *restrict yr, double *restrict yi, int *restrict nz, double tol, double elim,
            double alim) {
   /* Initialized data */
 
@@ -97,9 +95,9 @@ void zunk2(double zr, double zi, double fnu, int kode, int mr, int n,
   csrr[0] = crsc;
   csrr[1] = 1.;
   csrr[2] = cscl;
-  bry[0] = std::numeric_limits<double>::min() * 1e3 / tol;
+  bry[0] = DBL_MIN * 1e3 / tol;
   bry[1] = 1. / bry[0];
-  bry[2] = std::numeric_limits<double>::max();
+  bry[2] = DBL_MAX;
   zrr = zr;
   zri = zi;
   if (zr >= 0.) {
@@ -116,8 +114,8 @@ L10:
   inu = (int)fnu;
   fnf = fnu - inu;
   ang = -hpi * fnf;
-  car = std::cos(ang);
-  sar = std::sin(ang);
+  car = cos(ang);
+  sar = sin(ang);
   c2r = hpi * sar;
   c2i = -hpi * car;
   kk = inu % 4 + 1;
@@ -166,13 +164,13 @@ L20:
     //     TEST FOR UNDERFLOW AND OVERFLOW */
     // -----------------------------------------------------------------------/
     rs1 = s1r;
-    if (std::fabs(rs1) > elim) {
+    if (fabs(rs1) > elim) {
       goto L70;
     }
     if (kdflg == 1) {
       kflag = 2;
     }
-    if (std::fabs(rs1) < alim) {
+    if (fabs(rs1) < alim) {
       goto L50;
     }
     // -----------------------------------------------------------------------/
@@ -180,8 +178,8 @@ L20:
     // -----------------------------------------------------------------------/
     aphi = zabs(phir[j - 1], phii[j - 1]);
     aarg = zabs(argr[j - 1], argi[j - 1]);
-    rs1 = rs1 + std::log(aphi) - std::log(aarg) * .25 - aic;
-    if (std::fabs(rs1) > elim) {
+    rs1 = rs1 + log(aphi) - log(aarg) * .25 - aic;
+    if (fabs(rs1) > elim) {
       goto L70;
     }
     if (kdflg == 1) {
@@ -212,9 +210,9 @@ L20:
     pti = str * phii[j - 1] + sti * phir[j - 1];
     s2r = ptr * csr - pti * csi;
     s2i = ptr * csi + pti * csr;
-    str = std::exp(s1r) * cssr[kflag - 1];
-    s1r = str * std::cos(s1i);
-    s1i = str * std::sin(s1i);
+    str = exp(s1r) * cssr[kflag - 1];
+    s1r = str * cos(s1i);
+    s1i = str * sin(s1i);
     str = s2r * s1r - s2i * s1i;
     s2i = s1r * s2i + s2r * s1i;
     s2r = str;
@@ -309,18 +307,18 @@ L90:
   s1i = zet1di - zet2di;
 L100:
   rs1 = s1r;
-  if (std::fabs(rs1) > elim) {
+  if (fabs(rs1) > elim) {
     goto L105;
   }
-  if (std::fabs(rs1) < alim) {
+  if (fabs(rs1) < alim) {
     goto L120;
   }
   /* ----------------------------------------------------------------------- */
   /*     REFINE ESTIMATE AND TEST */
   /* ----------------------------------------------------------------------- */
   aphi = zabs(phidr, phidi);
-  rs1 += std::log(aphi);
-  if (std::fabs(rs1) < elim) {
+  rs1 += log(aphi);
+  if (fabs(rs1) < elim) {
     goto L120;
   }
 L105:
@@ -363,9 +361,9 @@ L120:
     if (kflag >= 3) {
       goto L130;
     }
-    str = std::fabs(c2r);
-    sti = std::fabs(c2i);
-    c2m = std::max(str, sti);
+    str = fabs(c2r);
+    sti = fabs(c2i);
+    c2m = MAX(str, sti);
     if (c2m <= ascle) {
       goto L130;
     }
@@ -391,7 +389,7 @@ L180:
   /* ----------------------------------------------------------------------- */
   *nz = 0;
   fmr = (double)mr;
-  sgn = -std::copysign(pi, fmr);
+  sgn = -copysign(pi, fmr);
   /* ----------------------------------------------------------------------- */
   /*     CSPN AND CSGN ARE COEFF OF K AND I FUNCTIONS RESP. */
   /* ----------------------------------------------------------------------- */
@@ -401,8 +399,8 @@ L180:
   }
   ifn = inu + n - 1;
   ang = fnf * sgn;
-  cspnr = std::cos(ang);
-  cspni = std::sin(ang);
+  cspnr = cos(ang);
+  cspni = sin(ang);
   if (ifn % 2 == 0) {
     goto L190;
   }
@@ -482,13 +480,13 @@ L190:
     //     TEST FOR UNDERFLOW AND OVERFLOW */
     // -----------------------------------------------------------------------/
     rs1 = s1r;
-    if (std::fabs(rs1) > elim) {
+    if (fabs(rs1) > elim) {
       goto L280;
     }
     if (kdflg == 1) {
       iflag = 2;
     }
-    if (std::fabs(rs1) < alim) {
+    if (fabs(rs1) < alim) {
       goto L240;
     }
     // -----------------------------------------------------------------------/
@@ -496,8 +494,8 @@ L190:
     // -----------------------------------------------------------------------/
     aphi = zabs(phidr, phidi);
     aarg = zabs(argdr, argdi);
-    rs1 = rs1 + std::log(aphi) - std::log(aarg) * .25 - aic;
-    if (std::fabs(rs1) > elim) {
+    rs1 = rs1 + log(aphi) - log(aarg) * .25 - aic;
+    if (fabs(rs1) > elim) {
       goto L280;
     }
     if (kdflg == 1) {
@@ -520,9 +518,9 @@ L190:
     pti = str * phidi + sti * phidr;
     s2r = ptr * csr - pti * csi;
     s2i = ptr * csi + pti * csr;
-    str = std::exp(s1r) * cssr[iflag - 1];
-    s1r = str * std::cos(s1i);
-    s1i = str * std::sin(s1i);
+    str = exp(s1r) * cssr[iflag - 1];
+    s1r = str * cos(s1i);
+    s1i = str * sin(s1i);
     str = s2r * s1r - s2i * s1i;
     s2i = s2r * s1i + s2i * s1r;
     s2r = str;
@@ -630,9 +628,9 @@ L295:
     if (iflag >= 3) {
       goto L310;
     }
-    c2r = std::fabs(ckr);
-    c2i = std::fabs(cki);
-    c2m = std::max(c2r, c2i);
+    c2r = fabs(ckr);
+    c2i = fabs(cki);
+    c2m = MAX(c2r, c2i);
     if (c2m <= ascle) {
       goto L310;
     }
@@ -654,4 +652,3 @@ L320:
   *nz = -1;
 }
 
-}  // namespace zbessel

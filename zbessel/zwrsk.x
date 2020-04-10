@@ -1,14 +1,12 @@
 #pragma once
 #include "zbsubr.h"
 #include "zops.h"
-#include <limits>
-#include <cmath>
+#include <limits.h>
+#include <math.h>
 
-namespace zbessel {
 
-template <class>
-void zwrsk(double zrr, double zri, double fnu, int kode, int n, double *__restrict__ yr,
-           double *__restrict__ yi, int *__restrict__ nz, double *__restrict__ cwr, double *__restrict__ cwi, double tol,
+void zwrsk(double zrr, double zri, double fnu, int kode, int n, double *restrict yr,
+           double *restrict yi, int *restrict nz, double *restrict cwr, double *restrict cwi, double tol,
            double elim, double alim) {
   /* Local variables */
   int i__, nw;
@@ -62,8 +60,8 @@ void zwrsk(double zrr, double zri, double fnu, int kode, int n, double *__restri
   if (kode == 1) {
     goto L10;
   }
-  cinur = std::cos(zri);
-  cinui = std::sin(zri);
+  cinur = cos(zri);
+  cinui = sin(zri);
 L10:
   /* ----------------------------------------------------------------------- */
   /*     ON LOW EXPONENT MACHINES THE K FUNCTIONS CAN BE CLOSE TO BOTH */
@@ -72,7 +70,7 @@ L10:
   /*     THE RESULT IS ON SCALE. */
   /* ----------------------------------------------------------------------- */
   acw = zabs(cwr[2], cwi[2]);
-  ascle = std::numeric_limits<double>::min() * 1e3 / tol;
+  ascle = DBL_MIN * 1e3 / tol;
   csclr = 1.;
   if (acw > ascle) {
     goto L20;
@@ -133,4 +131,3 @@ L50:
   }
 }
 
-}  // namespace zbessel

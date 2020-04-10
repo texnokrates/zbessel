@@ -1,15 +1,13 @@
 #pragma once
 #include "zbsubr.h"
-#include <algorithm>
-#include <cmath>
-#include <limits>
+//#include <algorithm>
+#include <math.h>
+#include <limits.h>
 
-namespace zbessel {
 
-template <class>
-int zbesy(double zr, double zi, double fnu, int kode, int n, double *__restrict__ cyr,
-          double *__restrict__ cyi, int *__restrict__ nz, double *__restrict__ cwrkr, double *__restrict__ cwrki) {
-  static const double r1m5 = std::log10(std::numeric_limits<double>::radix);
+int zbesy(double zr, double zi, double fnu, int kode, int n, double *restrict cyr,
+          double *restrict cyi, int *restrict nz, double *restrict cwrkr, double *restrict cwrki) {
+  static const double r1m5 = log10(FLT_RADIX);
 
   /* Local variables */
   int ierr;
@@ -209,7 +207,7 @@ int zbesy(double zr, double zi, double fnu, int kode, int n, double *__restrict_
   if (ierr != 0 && ierr != 3) {
     goto L170;
   }
-  *nz = std::min(nz1, nz2);
+  *nz = MIN(nz1, nz2);
   if (kode == 2) {
     goto L60;
   }
@@ -223,21 +221,21 @@ int zbesy(double zr, double zi, double fnu, int kode, int n, double *__restrict_
   return ierr;
 L60:
   /* Computing MAX */
-  tol = std::max(std::numeric_limits<double>::epsilon(), 1e-18);
-  k1 = std::numeric_limits<double>::min_exponent;
-  k2 = std::numeric_limits<double>::max_exponent;
+  tol = MAX(DBL_EPSILON, 1e-18);
+  k1 = DBL_MIN_EXP;
+  k2 = DBL_MAX_EXP;
   /* Computing MIN */
-  k = std::min(std::abs(k1), std::abs(k2));
+  k = MIN(abs(k1), abs(k2));
   /* ----------------------------------------------------------------------- */
   /*     ELIM IS THE APPROXIMATE EXPONENTIAL UNDER- AND OVERFLOW LIMIT */
   /* ----------------------------------------------------------------------- */
   elim = (k * r1m5 - 3.) * 2.303;
-  exr = std::cos(zr);
-  exi = std::sin(zr);
+  exr = cos(zr);
+  exi = sin(zr);
   ey = 0.;
-  tay = std::fabs(zi + zi);
+  tay = fabs(zi + zi);
   if (tay < elim) {
-    ey = std::exp(-tay);
+    ey = exp(-tay);
   }
   if (zi < 0.) {
     goto L90;
@@ -249,7 +247,7 @@ L60:
 L70:
   *nz = 0;
   rtol = 1. / tol;
-  ascle = std::numeric_limits<double>::min() * rtol * 1e3;
+  ascle = DBL_MIN * rtol * 1e3;
   for (i__ = 1; i__ <= n; ++i__) {
     /*       STR = C1R*CYR(I) - C1I*CYI(I) */
     /*       STI = C1R*CYI(I) + C1I*CYR(I) */
@@ -261,7 +259,7 @@ L70:
     bb = cwrki[i__];
     atol = 1.;
     /* Computing MAX */
-    if (std::max(std::fabs(aa), std::fabs(bb)) > ascle) {
+    if (MAX(fabs(aa), fabs(bb)) > ascle) {
       goto L75;
     }
     aa *= rtol;
@@ -274,7 +272,7 @@ L70:
     bb = cyi[i__];
     atol = 1.;
     /* Computing MAX */
-    if (std::max(std::fabs(aa), std::fabs(bb)) > ascle) {
+    if (MAX(fabs(aa), fabs(bb)) > ascle) {
       goto L85;
     }
     aa *= rtol;
@@ -302,4 +300,3 @@ L170:
   return ierr;
 }
 
-}  // namespace zbessel

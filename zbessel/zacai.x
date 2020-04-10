@@ -1,14 +1,12 @@
 #pragma once
 #include "zbsubr.h"
 #include "zops.h"
-#include <limits>
-#include <cmath>
+#include <limits.h>
+#include <math.h>
 
-namespace zbessel {
 
-template <class>
 void zacai(double zr, double zi, double fnu, int kode, int mr, int n,
-           double *__restrict__ yr, double *__restrict__ yi, int *__restrict__ nz, double rl, double tol,
+           double *restrict yr, double *restrict yi, int *restrict nz, double rl, double tol,
            double elim, double alim) {
   /* Initialized data */
 
@@ -103,15 +101,15 @@ L40:
     goto L80;
   }
   fmr = (double)mr;
-  sgn = -std::copysign(pi, fmr);
+  sgn = -copysign(pi, fmr);
   csgnr = 0.;
   csgni = sgn;
   if (kode == 1) {
     goto L50;
   }
   yy = -zni;
-  csgnr = -csgni * std::sin(yy);
-  csgni *= std::cos(yy);
+  csgnr = -csgni * sin(yy);
+  csgni *= cos(yy);
 L50:
   /* ----------------------------------------------------------------------- */
   /*     CALCULATE CSPN=EXP(FNU*PI*I) TO MINIMIZE LOSSES OF SIGNIFICANCE */
@@ -119,8 +117,8 @@ L50:
   /* ----------------------------------------------------------------------- */
   inu = (int)fnu;
   arg = (fnu - inu) * sgn;
-  cspnr = std::cos(arg);
-  cspni = std::sin(arg);
+  cspnr = cos(arg);
+  cspni = sin(arg);
   if (inu % 2 == 0) {
     goto L60;
   }
@@ -135,7 +133,7 @@ L60:
     goto L70;
   }
   iuf = 0;
-  ascle = std::numeric_limits<double>::min() * 1e3 / tol;
+  ascle = DBL_MIN * 1e3 / tol;
   zs1s2(znr, zni, &c1r, &c1i, &c2r, &c2i, &nw, ascle, alim, &iuf);
   *nz += nw;
 L70:
@@ -149,4 +147,3 @@ L80:
   }
 }
 
-}  // namespace zbessel

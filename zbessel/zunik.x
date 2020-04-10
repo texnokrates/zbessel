@@ -1,16 +1,14 @@
 #pragma once
 #include "zbsubr.h"
 #include "zops.h"
-#include <limits>
-#include <cmath>
+#include <limits.h>
+#include <math.h>
 
-namespace zbessel {
 
-template <class>
 void zunik(double zrr, double zri, double fnu, int ikflg, int ipmtr,
-           double tol, int init, double *__restrict__ phir, double *__restrict__ phii, double *__restrict__ zeta1r,
-           double *__restrict__ zeta1i, double *__restrict__ zeta2r, double *__restrict__ zeta2i, double *__restrict__ sumr,
-           double *__restrict__ sumi, double *__restrict__ cwrkr, double *__restrict__ cwrki) {
+           double tol, int init, double *restrict phir, double *restrict phii, double *restrict zeta1r,
+           double *restrict zeta1i, double *restrict zeta2r, double *restrict zeta2i, double *restrict sumr,
+           double *restrict sumi, double *restrict cwrkr, double *restrict cwrki) {
   /* Initialized data */
 
   const double con[2] = {
@@ -71,12 +69,12 @@ void zunik(double zrr, double zri, double fnu, int ikflg, int ipmtr,
   /* ----------------------------------------------------------------------- */
   /*     OVERFLOW TEST (ZR/FNU TOO SMALL) */
   /* ----------------------------------------------------------------------- */
-  test = std::numeric_limits<double>::min() * 1e3;
+  test = DBL_MIN * 1e3;
   ac = fnu * test;
-  if (std::fabs(zrr) > ac || std::fabs(zri) > ac) {
+  if (fabs(zrr) > ac || fabs(zri) > ac) {
     goto L15;
   }
-  *zeta1r = std::fabs(std::log(test)) * 2. + fnu;
+  *zeta1r = fabs(log(test)) * 2. + fnu;
   *zeta1i = 0.;
   *zeta2r = fnu;
   *zeta2i = 0.;
@@ -129,7 +127,7 @@ L15:
     cwrkr[k] = crfnr * sr - crfni * si;
     cwrki[k] = crfnr * si + crfni * sr;
     ac *= rfn;
-    test = std::fabs(cwrkr[k]) + std::fabs(cwrki[k]);
+    test = fabs(cwrkr[k]) + fabs(cwrki[k]);
     if (ac < tol && test < tol) {
       goto L30;
     }
@@ -176,4 +174,3 @@ L60:
   *phii = cwrki[16] * con[1];
 }
 
-}  // namespace zbessel

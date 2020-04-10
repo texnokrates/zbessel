@@ -1,13 +1,11 @@
 #pragma once
 #include "zbsubr.h"
 #include "zops.h"
-#include <algorithm>
+//#include <algorithm>
 
-namespace zbessel {
 
-template <class>
-void zbinu(double zr, double zi, double fnu, int kode, int n, double *__restrict__ cyr,
-           double *__restrict__ cyi, int *__restrict__ nz, double rl, double fnul, double tol,
+void zbinu(double zr, double zi, double fnu, int kode, int n, double *restrict cyr,
+           double *restrict cyi, int *restrict nz, double rl, double fnul, double tol,
            double elim, double alim) {
   /* Local variables */
   int i__;
@@ -55,7 +53,7 @@ L10:
   /*     POWER SERIES */
   /* ----------------------------------------------------------------------- */
   zseri(zr, zi, fnu, kode, nn, &cyr[1], &cyi[1], &nw, tol, elim, alim);
-  inw = std::abs(nw);
+  inw = abs(nw);
   *nz += inw;
   nn -= inw;
   if (nn == 0) {
@@ -154,7 +152,7 @@ L110:
   /*     INCREMENT FNU+NN-1 UP TO FNUL, COMPUTE AND RECUR BACKWARD */
   /* ----------------------------------------------------------------------- */
   nui = (int)(fnul - dfnu + 1);
-  nui = std::max(nui, 0);
+  nui = MAX(nui, 0);
   zbuni(zr, zi, fnu, kode, nn, &cyr[1], &cyi[1], &nw, nui, &nlast, fnul, tol,
         elim, alim);
   if (nw < 0) {
@@ -175,4 +173,3 @@ L130:
   }
 }
 
-}  // namespace zbessel

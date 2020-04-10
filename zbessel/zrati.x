@@ -1,14 +1,12 @@
 #pragma once
 #include "zbsubr.h"
 #include "zops.h"
-#include <algorithm>
-#include <cmath>
+//#include <algorithm>
+#include <math.h>
 
-namespace zbessel {
 
-template <class>
-void zrati(double zr, double zi, double fnu, int n, double *__restrict__ cyr,
-           double *__restrict__ cyi, double tol) {
+void zrati(double zr, double zi, double fnu, int n, double *restrict cyr,
+           double *restrict cyi, double tol) {
   /* Initialized data */
 
   const double rt2 = 1.41421356237309514547L;  // sqrt(2)
@@ -60,7 +58,7 @@ void zrati(double zr, double zi, double fnu, int n, double *__restrict__ cyr,
   magz = (int)az;
   amagz = (double)(magz + 1);
   fdnu = (double)idnu;
-  fnup = std::max(amagz, fdnu);
+  fnup = MAX(amagz, fdnu);
   id = idnu - magz - 1;
   itime = 1;
   k = 1;
@@ -87,7 +85,7 @@ void zrati(double zr, double zi, double fnu, int n, double *__restrict__ cyr,
   /*     PREMATURELY. */
   /* ----------------------------------------------------------------------- */
   arg = (ap2 + ap2) / (ap1 * tol);
-  test1 = std::sqrt(arg);
+  test1 = sqrt(arg);
   test = test1;
   rap1 = 1. / ap1;
   p1r *= rap1;
@@ -114,10 +112,10 @@ L10:
     goto L20;
   }
   ak = zabs(t1r, t1i) * .5;
-  flam = ak + std::sqrt(ak * ak - 1.);
+  flam = ak + sqrt(ak * ak - 1.);
   /* Computing MIN */
-  rho = std::min(ap2 / ap1, flam);
-  test = test1 * std::sqrt(rho / (rho * rho - 1.));
+  rho = MIN(ap2 / ap1, flam);
+  test = test1 * sqrt(rho / (rho * rho - 1.));
   itime = 2;
   goto L10;
 L20:
@@ -179,4 +177,3 @@ L40:
   }
 }
 
-}  // namespace zbessel

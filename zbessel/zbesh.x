@@ -1,20 +1,17 @@
 #pragma once
 #include "zbsubr.h"
 #include "zops.h"
-#include <limits>
-#include <algorithm>
-#include <cmath>
+#include <limits.h>
+#include <math.h>
 
-namespace zbessel {
 
-template <class>
 int zbesh(double zr, double zi, double fnu, int kode, int m,
-          int n, double *__restrict__ cyr, double *__restrict__ cyi, int *__restrict__ nz) {
-  static const double r1m5 = std::log10(std::numeric_limits<double>::radix);
+          int n, double *restrict cyr, double *restrict cyi, int *restrict nz) {
+  static const double r1m5 = log10(FLT_RADIX);
 
   /* Initialized data */
 
-  const double hpi = 1.570796326794896558L;  // pi/2
+  static const double hpi = 1.570796326794896558L;  // pi/2
 
   /* Local variables */
   int ierr;
@@ -232,18 +229,18 @@ int zbesh(double zr, double zi, double fnu, int kode, int m,
   /*     FNUL IS THE LOWER BOUNDARY OF THE ASYMPTOTIC SERIES FOR LARGE FNU */
   /* ----------------------------------------------------------------------- */
   /* Computing MAX */
-  tol = std::max(std::numeric_limits<double>::epsilon(), 1e-18);
-  k1 = std::numeric_limits<double>::min_exponent;
-  k2 = std::numeric_limits<double>::max_exponent;
+  tol = MAX(DBL_EPSILON, 1e-18);
+  k1 = DBL_MIN_EXP;
+  k2 = DBL_MAX_EXP;
   /* Computing MIN */
-  k = std::min(std::abs(k1), std::abs(k2));
+  k = MIN(abs(k1), abs(k2));
   elim = (k * r1m5 - 3.) * 2.303;
-  k1 = std::numeric_limits<double>::digits - 1;
+  k1 = DBL_MANT_DIG - 1;
   aa = r1m5 * k1;
-  dig = std::min(aa, 18.);
+  dig = MIN(aa, 18.);
   aa *= 2.303;
   /* Computing MAX */
-  alim = elim + std::max(-aa, -41.45);
+  alim = elim + MAX(-aa, -41.45);
   fnul = (dig - 3.) * 6. + 10.;
   rl = dig * 1.2 + 3.;
   fn = fnu + (nn - 1);
@@ -256,15 +253,15 @@ int zbesh(double zr, double zi, double fnu, int kode, int m,
   /* ----------------------------------------------------------------------- */
   az = zabs(zr, zi);
   aa = .5 / tol;
-  bb = std::numeric_limits<int>::max() * .5;
-  aa = std::min(aa, bb);
+  bb = INT_MAX * .5;
+  aa = MIN(aa, bb);
   if (az > aa) {
     goto L260;
   }
   if (fn > aa) {
     goto L260;
   }
-  aa = std::sqrt(aa);
+  aa = sqrt(aa);
   if (az > aa) {
     ierr = 3;
   }
@@ -274,7 +271,7 @@ int zbesh(double zr, double zi, double fnu, int kode, int m,
   /* ----------------------------------------------------------------------- */
   /*     OVERFLOW TEST ON THE LAST MEMBER OF THE SEQUENCE */
   /* ----------------------------------------------------------------------- */
-  ufl = std::numeric_limits<double>::min() * 1e3;
+  ufl = DBL_MIN * 1e3;
   if (az < ufl) {
     goto L230;
   }
@@ -291,7 +288,7 @@ int zbesh(double zr, double zi, double fnu, int kode, int m,
     goto L70;
   }
   arg = az * .5;
-  aln = -fn * std::log(arg);
+  aln = -fn * log(arg);
   if (aln > elim) {
     goto L230;
   }
@@ -358,7 +355,7 @@ L110:
 
   /*     ZT=EXP(-FMM*HPI*I) = CMPLX(0.0,-FMM), FMM=3-2*M, M=1,2 */
   /* ----------------------------------------------------------------------- */
-  sgn = std::copysign(hpi, -fmm);
+  sgn = copysign(hpi, -fmm);
   /* ----------------------------------------------------------------------- */
   /*     CALCULATE EXP(FNU*HPI*I) TO MINIMIZE LOSSES OF SIGNIFICANCE */
   /*     WHEN FNU IS LARGE */
@@ -370,8 +367,8 @@ L110:
   rhpi = 1. / sgn;
   /*     ZNI = RHPI*COS(ARG) */
   /*     ZNR = -RHPI*SIN(ARG) */
-  csgni = rhpi * std::cos(arg);
-  csgnr = -rhpi * std::sin(arg);
+  csgni = rhpi * cos(arg);
+  csgnr = -rhpi * sin(arg);
   if (inuh % 2 == 0) {
     goto L120;
   }
@@ -394,7 +391,7 @@ L120:
     bb = cyi[i__];
     atol = 1.;
     /* Computing MAX */
-    if (std::max(std::fabs(aa), std::fabs(bb)) > ascle) {
+    if (MAX(fabs(aa), fabs(bb)) > ascle) {
       goto L135;
     }
     aa *= rtol;
@@ -433,4 +430,3 @@ L260:
   return ierr;
 }
 
-}  // namespace zbessel

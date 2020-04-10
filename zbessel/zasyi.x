@@ -1,14 +1,12 @@
 #pragma once
 #include "zbsubr.h"
 #include "zops.h"
-#include <limits>
-#include <cmath>
+#include <limits.h>
+#include <math.h>
 
-namespace zbessel {
 
-template <class>
 void zasyi(double zr, double zi, double fnu, int kode,
-           int n, double *__restrict__ yr, double *__restrict__ yi, int *__restrict__ nz,
+           int n, double *restrict yr, double *restrict yi, int *restrict nz,
            double rl, double tol, double elim, double alim) {
   /* Initialized data */
   const double pi = 3.14159265358979323846L;
@@ -58,9 +56,9 @@ void zasyi(double zr, double zi, double fnu, int kode,
   /* ***FIRST EXECUTABLE STATEMENT  ZASYI */
   *nz = 0;
   az = zabs(zr, zi);
-  arm = std::numeric_limits<double>::min() * 1e3;
-  rtr1 = std::sqrt(arm);
-  il = std::min(2, n);
+  arm = DBL_MIN * 1e3;
+  rtr1 = sqrt(arm);
+  il = MIN(2, n);
   dfnu = fnu + (n - il);
   /* ----------------------------------------------------------------------- */
   /*     OVERFLOW TEST */
@@ -79,12 +77,12 @@ void zasyi(double zr, double zi, double fnu, int kode,
   czr = 0.;
   czi = zi;
 L10:
-  if (std::fabs(czr) > elim) {
+  if (fabs(czr) > elim) {
     goto L100;
   }
   dnu2 = dfnu + dfnu;
   koded = 1;
-  if (std::fabs(czr) > alim && n > 2) {
+  if (fabs(czr) > alim && n > 2) {
     goto L20;
   }
   koded = 0;
@@ -117,8 +115,8 @@ L20:
   inu = (int)(fnu);
   arg = (fnu - inu) * pi;
   inu = inu + n - il;
-  ak = -std::sin(arg);
-  bk = std::cos(arg);
+  ak = -sin(arg);
+  bk = cos(arg);
   if (zi < 0.) {
     bk = -bk;
   }
@@ -132,7 +130,7 @@ L20:
 L30:
   for (k = 1; k <= il; ++k) {
     sqk = fdn - 1.;
-    atol = s * std::fabs(sqk);
+    atol = s * fabs(sqk);
     sgn = 1.;
     cs1r = 1.;
     cs1i = 0.;
@@ -156,7 +154,7 @@ L30:
       cs1i += cki * sgn;
       dkr += ezr;
       dki += ezi;
-      aa = aa * std::fabs(sqk) / bb;
+      aa = aa * fabs(sqk) / bb;
       bb += aez;
       ak += 8.;
       sqk -= ak;
@@ -224,4 +222,3 @@ L110:
   *nz = -2;
 }
 
-}  // namespace zbessel

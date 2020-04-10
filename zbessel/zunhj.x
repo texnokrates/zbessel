@@ -1,16 +1,14 @@
 #pragma once
 #include "zbsubr.h"
 #include "zops.h"
-#include <limits>
-#include <cmath>
+#include <limits.h>
+#include <math.h>
 
-namespace zbessel {
 
-template <class>
 void zunhj(double zr, double zi, double fnu, int ipmtr, double tol,
-           double *__restrict__ phir, double *__restrict__ phii, double *__restrict__ argr, double *__restrict__ argi,
-           double *__restrict__ zeta1r, double *__restrict__ zeta1i, double *__restrict__ zeta2r, double *__restrict__ zeta2i,
-           double *__restrict__ asumr, double *__restrict__ asumi, double *__restrict__ bsumr, double *__restrict__ bsumi) {
+           double *restrict phir, double *restrict phii, double *restrict argr, double *restrict argi,
+           double *restrict zeta1r, double *restrict zeta1i, double *restrict zeta2r, double *restrict zeta2i,
+           double *restrict asumr, double *restrict asumi, double *restrict bsumr, double *restrict bsumi) {
   /* Initialized data */
 
   const double ar[14] = {1., .104166666666666667, .0835503472222222222, .12822657455632716, .291849026464140464, .881627267443757652, 3.32140828186276754, 14.9957629868625547, 78.9230130115865181, 474.451538868264323, 3207.49009089066193, 24086.5496408740049, 198923.119169509794, 1791902.00777534383};
@@ -98,12 +96,12 @@ void zunhj(double zr, double zi, double fnu, int ipmtr, double tol,
   /* ----------------------------------------------------------------------- */
   /*     OVERFLOW TEST (Z/FNU TOO SMALL) */
   /* ----------------------------------------------------------------------- */
-  test = std::numeric_limits<double>::min() * 1e3;
+  test = DBL_MIN * 1e3;
   ac = fnu * test;
-  if (std::fabs(zr) > ac || std::fabs(zi) > ac) {
+  if (fabs(zr) > ac || fabs(zi) > ac) {
     goto L15;
   }
-  *zeta1r = std::fabs(std::log(test)) * 2. + fnu;
+  *zeta1r = fabs(log(test)) * 2. + fnu;
   *zeta1i = 0.;
   *zeta2r = fnu;
   *zeta2i = 0.;
@@ -119,7 +117,7 @@ L15:
   /* ----------------------------------------------------------------------- */
   /*     COMPUTE IN THE FOURTH QUADRANT */
   /* ----------------------------------------------------------------------- */
-  fn13 = std::pow(fnu, ex1);
+  fn13 = pow(fnu, ex1);
   fn23 = fn13 * fn13;
   rfn13 = 1. / fn13;
   w2r = 1. - zbr * zbr + zbi * zbi;
@@ -190,7 +188,7 @@ L20:
   *bsumi = sumbi;
   l1 = 0;
   l2 = 30;
-  btol = tol * (std::fabs(*bsumr) + std::fabs(*bsumi));
+  btol = tol * (fabs(*bsumr) + fabs(*bsumi));
   atol = tol;
   pp = 1.;
   ias = 0;
@@ -296,15 +294,15 @@ L130:
   if (zthr == 0.) {
     goto L140;
   }
-  ang = std::atan(zthi / zthr);
+  ang = atan(zthi / zthr);
   if (zthr < 0.) {
     ang += gpi;
   }
 L140:
-  pp = std::pow(azth, ex2);
+  pp = pow(azth, ex2);
   ang *= ex2;
-  zetar = pp * std::cos(ang);
-  zetai = pp * std::sin(ang);
+  zetar = pp * cos(ang);
+  zetai = pp * sin(ang);
   if (zetai < 0.) {
     zetai = 0.;
   }
@@ -320,7 +318,7 @@ L140:
   if (ipmtr == 1) {
     goto L120;
   }
-  raw = 1. / std::sqrt(aw2);
+  raw = 1. / sqrt(aw2);
   str = wr * raw;
   sti = -wi * raw;
   tfnr = str * rfnu * raw;
@@ -355,7 +353,7 @@ L140:
   upr[0] = 1.;
   upi[0] = 0.;
   pp = 1.;
-  btol = tol * (std::fabs(*bsumr) + std::fabs(*bsumi));
+  btol = tol * (fabs(*bsumr) + fabs(*bsumi));
   ks = 0;
   kp1 = 2;
   l = 3;
@@ -411,7 +409,7 @@ L140:
     }
     *asumr += sumar;
     *asumi += sumai;
-    test = std::fabs(sumar) + std::fabs(sumai);
+    test = fabs(sumar) + fabs(sumai);
     if (pp < tol && test < tol) {
       ias = 1;
     }
@@ -430,7 +428,7 @@ L140:
     }
     *bsumr += sumbr;
     *bsumi += sumbi;
-    test = std::fabs(sumbr) + std::fabs(sumbi);
+    test = fabs(sumbr) + fabs(sumbi);
     if (pp < btol && test < btol) {
       ibs = 1;
     }
@@ -448,4 +446,3 @@ L220:
   goto L120;
 }
 
-}  // namespace zbessel

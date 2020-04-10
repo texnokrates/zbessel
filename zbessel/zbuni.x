@@ -1,15 +1,13 @@
 #pragma once
 #include "zbsubr.h"
 #include "zops.h"
-#include <algorithm>
-#include <cmath>
-#include <limits>
+//#include <algorithm>
+#include <math.h>
+#include <limits.h>
 
-namespace zbessel {
 
-template <class>
-void zbuni(double zr, double zi, double fnu, int kode, int n, double *__restrict__ yr,
-           double *__restrict__ yi, int *__restrict__ nz, int nui, int *__restrict__ nlast, double fnul, double tol,
+void zbuni(double zr, double zi, double fnu, int kode, int n, double *restrict yr,
+           double *restrict yi, int *restrict nz, int nui, int *restrict nlast, double fnul, double tol,
            double elim, double alim) {
   /* Local variables */
   int i__, k;
@@ -50,8 +48,8 @@ void zbuni(double zr, double zi, double fnu, int kode, int n, double *__restrict
 
   /* Function Body */
   *nz = 0;
-  ax = std::fabs(zr) * 1.7321;
-  ay = std::fabs(zi);
+  ax = fabs(zr) * 1.7321;
+  ay = fabs(zi);
   iform = 1;
   if (ay > ax) {
     iform = 2;
@@ -89,7 +87,7 @@ L20:
   /* ---------------------------------------------------------------------- */
   /*     SCALE BACKWARD RECURRENCE, BRY(3) IS DEFINED BUT NEVER USED */
   /* ---------------------------------------------------------------------- */
-  bry[0] = std::numeric_limits<double>::min() * 1e3 / tol;
+  bry[0] = DBL_MIN * 1e3 / tol;
   bry[1] = 1. / bry[0];
   bry[2] = bry[1];
   iflag = 2;
@@ -133,9 +131,9 @@ L25:
     }
     str = s2r * cscrr;
     sti = s2i * cscrr;
-    c1r = std::fabs(str);
-    c1i = std::fabs(sti);
-    c1m = std::max(c1r, c1i);
+    c1r = fabs(str);
+    c1i = fabs(sti);
+    c1m = MAX(c1r, c1i);
     if (c1m <= ascle) {
       goto L30;
     }
@@ -177,9 +175,9 @@ L25:
     if (iflag >= 3) {
       goto L40;
     }
-    c1r = std::fabs(str);
-    c1i = std::fabs(sti);
-    c1m = std::max(c1r, c1i);
+    c1r = fabs(str);
+    c1i = fabs(sti);
+    c1m = MAX(c1r, c1i);
     if (c1m <= ascle) {
       goto L40;
     }
@@ -233,4 +231,3 @@ L90:
   *nlast = n;
 }
 
-}  // namespace zbessel

@@ -1,15 +1,13 @@
 #pragma once
 #include "zbsubr.h"
 #include "zops.h"
-#include <limits>
-#include <algorithm>
-#include <cmath>
+#include <limits.h>
+//#include <algorithm>
+#include <math.h>
 
-namespace zbessel {
 
-template <class>
-void zseri(double zr, double zi, double fnu, int kode, int n, double *__restrict__ yr,
-           double *__restrict__ yi, int *__restrict__ nz, double tol, double elim, double alim) {
+void zseri(double zr, double zi, double fnu, int kode, int n, double *restrict yr,
+           double *restrict yi, int *restrict nz, double tol, double elim, double alim) {
   /* Local variables */
   int i__, k, l, m;
   double s, aa;
@@ -62,8 +60,8 @@ void zseri(double zr, double zi, double fnu, int kode, int n, double *__restrict
   if (az == 0.) {
     goto L160;
   }
-  arm = std::numeric_limits<double>::min() * 1e3;
-  rtr1 = std::sqrt(arm);
+  arm = DBL_MIN * 1e3;
+  rtr1 = sqrt(arm);
   crscr = 1.;
   iflag = 0;
   if (az < arm) {
@@ -89,7 +87,7 @@ L20:
   /* ----------------------------------------------------------------------- */
   ak1r = ckr * dfnu;
   ak1i = cki * dfnu;
-  ak = std::lgamma(fnup);
+  ak = lgamma(fnup);
   ak1r -= ak;
   if (kode == 2) {
     ak1r -= zr;
@@ -118,14 +116,14 @@ L40:
   crscr = tol;
   ascle = arm * ss;
 L50:
-  aa = std::exp(ak1r);
+  aa = exp(ak1r);
   if (iflag == 1) {
     aa *= ss;
   }
-  coefr = aa * std::cos(ak1i);
-  coefi = aa * std::sin(ak1i);
+  coefr = aa * cos(ak1i);
+  coefi = aa * sin(ak1i);
   atol = tol * acz / fnup;
-  il = std::min(2, nn);
+  il = MIN(2, nn);
   for (i__ = 1; i__ <= il; ++i__) {
     dfnu = fnu + (nn - i__);
     fnup = dfnu + 1.;
@@ -268,4 +266,3 @@ L190:
   *nz = -(*nz);
 }
 
-}  // namespace zbessel
