@@ -7,7 +7,11 @@
 
 
 int camos_zbiry(double zr, double zi, int id, int kode, double *restrict bir, double *restrict bii) {
-  static const double r1m5 = log10(FLT_RADIX);
+#if (FLT_RADIX == 2)
+  static const double r1m5 = 0.301029995663981195213738894724493026768189L;
+#else
+  const double r1m5 = log10(FLT_RADIX);
+#endif
 
   /* Initialized data */
 

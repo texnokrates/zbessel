@@ -8,7 +8,11 @@
 
 int camos_zairy(double zr, double zi, int id, int kode, double *restrict air, double *restrict aii,
           int *restrict nz) {
-  static const double r1m5 = log10(FLT_RADIX);
+#if (FLT_RADIX == 2)
+  static const double r1m5 = 0.301029995663981195213738894724493026768189L;
+#else
+  const double r1m5 = log10(FLT_RADIX);
+#endif
 
   /* Initialized data */
 
