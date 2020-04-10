@@ -5,7 +5,7 @@
 #include <math.h>
 
 
-void zrati(double zr, double zi, double fnu, int n, double *restrict cyr,
+static void zrati(double zr, double zi, double fnu, int n, double *restrict cyr,
            double *restrict cyi, double tol) {
   /* Initialized data */
 

@@ -7,7 +7,7 @@
 #include <float.h>
 
 
-void zbknu(double zr, double zi, double fnu, int kode, int n, double *restrict yr,
+static void zbknu(double zr, double zi, double fnu, int kode, int n, double *restrict yr,
            double *restrict yi, int *restrict nz, double tol, double elim, double alim) {
   static const double r1m5 = log10(FLT_RADIX);
 

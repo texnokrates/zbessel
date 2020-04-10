@@ -5,7 +5,7 @@
 #include <math.h>
 
 
-void zwrsk(double zrr, double zri, double fnu, int kode, int n, double *restrict yr,
+static void zwrsk(double zrr, double zri, double fnu, int kode, int n, double *restrict yr,
            double *restrict yi, int *restrict nz, double *restrict cwr, double *restrict cwi, double tol,
            double elim, double alim) {
   /* Local variables */

@@ -4,7 +4,7 @@
 #include <math.h>
 
 
-void zbunk(double zr, double zi, double fnu, int kode, int mr, int n,
+static void zbunk(double zr, double zi, double fnu, int kode, int mr, int n,
            double *restrict yr, double *restrict yi, int *restrict nz, double tol, double elim,
            double alim) {
   double ax, ay;

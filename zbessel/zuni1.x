@@ -6,7 +6,7 @@
 #include <math.h>
 
 
-void zuni1(double zr, double zi, double fnu, int kode, int n, double *restrict yr,
+static void zuni1(double zr, double zi, double fnu, int kode, int n, double *restrict yr,
            double *restrict yi, int *restrict nz, int *restrict nlast, double fnul, double tol,
            double elim, double alim) {
   /* Local variables */

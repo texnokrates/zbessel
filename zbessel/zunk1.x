@@ -6,7 +6,7 @@
 #include <math.h>
 
 
-void zunk1(double zr, double zi, double fnu, int kode, int mr, int n,
+static void zunk1(double zr, double zi, double fnu, int kode, int mr, int n,
            double *restrict yr, double *restrict yi, int *restrict nz, double tol, double elim,
            double alim) {
   /* Initialized data */

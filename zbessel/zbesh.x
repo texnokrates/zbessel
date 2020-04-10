@@ -5,7 +5,7 @@
 #include <math.h>
 
 
-int zbesh(double zr, double zi, double fnu, int kode, int m,
+int camos_zbesh(double zr, double zi, double fnu, int kode, int m,
           int n, double *restrict cyr, double *restrict cyi, int *restrict nz) {
   static const double r1m5 = log10(FLT_RADIX);
 

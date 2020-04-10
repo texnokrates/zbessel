@@ -5,7 +5,7 @@
 #include <math.h>
 
 
-void zunik(double zrr, double zri, double fnu, int ikflg, int ipmtr,
+static void zunik(double zrr, double zri, double fnu, int ikflg, int ipmtr,
            double tol, int init, double *restrict phir, double *restrict phii, double *restrict zeta1r,
            double *restrict zeta1i, double *restrict zeta2r, double *restrict zeta2i, double *restrict sumr,
            double *restrict sumi, double *restrict cwrkr, double *restrict cwrki) {

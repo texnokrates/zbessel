@@ -6,7 +6,7 @@
 #include <math.h>
 
 
-void zuni2(double zr, double zi, double fnu, int kode, int n, double *restrict yr,
+static void zuni2(double zr, double zi, double fnu, int kode, int n, double *restrict yr,
            double *restrict yi, int *restrict nz, int *restrict nlast, double fnul, double tol,
            double elim, double alim) {
   /* Initialized data */
@@ -200,8 +200,8 @@ L40:
     /*     EXPONENT EXTREMES */
     /* -----------------------------------------------------------------------
      */
-    zairy(argr, argi, 0, 2, &air, &aii, &nai);
-    zairy(argr, argi, 1, 2, &dair, &daii, &ndai);
+    camos_zairy(argr, argi, 0, 2, &air, &aii, &nai);
+    camos_zairy(argr, argi, 1, 2, &dair, &daii, &ndai);
     str = dair * bsumr - daii * bsumi;
     sti = dair * bsumi + daii * bsumr;
     str += air * asumr - aii * asumi;

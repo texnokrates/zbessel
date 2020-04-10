@@ -6,7 +6,7 @@
 #include <math.h>
 
 
-void zunk2(double zr, double zi, double fnu, int kode, int mr, int n,
+static void zunk2(double zr, double zi, double fnu, int kode, int mr, int n,
            double *restrict yr, double *restrict yi, int *restrict nz, double tol, double elim,
            double alim) {
   /* Initialized data */
@@ -198,8 +198,8 @@ L20:
     // -----------------------------------------------------------------------/
     c2r = argr[j - 1] * cr2r - argi[j - 1] * cr2i;
     c2i = argr[j - 1] * cr2i + argi[j - 1] * cr2r;
-    zairy(c2r, c2i, 0, 2, &air, &aii, &nai);
-    zairy(c2r, c2i, 1, 2, &dair, &daii, &ndai);
+    camos_zairy(c2r, c2i, 0, 2, &air, &aii, &nai);
+    camos_zairy(c2r, c2i, 1, 2, &dair, &daii, &ndai);
     str = dair * bsumr[j - 1] - daii * bsumi[j - 1];
     sti = dair * bsumi[j - 1] + daii * bsumr[j - 1];
     ptr = str * cr2r - sti * cr2i;
@@ -508,8 +508,8 @@ L190:
       iflag = 3;
     }
   L240:
-    zairy(argdr, argdi, 0, 2, &air, &aii, &nai);
-    zairy(argdr, argdi, 1, 2, &dair, &daii, &ndai);
+    camos_zairy(argdr, argdi, 0, 2, &air, &aii, &nai);
+    camos_zairy(argdr, argdi, 1, 2, &dair, &daii, &ndai);
     str = dair * bsumdr - daii * bsumdi;
     sti = dair * bsumdi + daii * bsumdr;
     str += air * asumdr - aii * asumdi;

@@ -4,7 +4,7 @@
 //#include <algorithm>
 
 
-void zbinu(double zr, double zi, double fnu, int kode, int n, double *restrict cyr,
+static void zbinu(double zr, double zi, double fnu, int kode, int n, double *restrict cyr,
            double *restrict cyi, int *restrict nz, double rl, double fnul, double tol,
            double elim, double alim) {
   /* Local variables */

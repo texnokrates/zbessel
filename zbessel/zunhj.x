@@ -5,7 +5,7 @@
 #include <math.h>
 
 
-void zunhj(double zr, double zi, double fnu, int ipmtr, double tol,
+static void zunhj(double zr, double zi, double fnu, int ipmtr, double tol,
            double *restrict phir, double *restrict phii, double *restrict argr, double *restrict argi,
            double *restrict zeta1r, double *restrict zeta1i, double *restrict zeta2r, double *restrict zeta2i,
            double *restrict asumr, double *restrict asumi, double *restrict bsumr, double *restrict bsumi) {

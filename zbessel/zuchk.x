@@ -4,7 +4,7 @@
 #include <math.h>
 
 
-void zuchk(double yr, double yi, int *restrict nz, double ascle, double tol) {
+static void zuchk(double yr, double yi, int *restrict nz, double ascle, double tol) {
   double wi, ss, st, wr;
 
   /* ***BEGIN PROLOGUE  ZUCHK */

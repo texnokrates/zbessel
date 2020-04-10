@@ -5,7 +5,7 @@
 #include <limits.h>
 
 
-int zbesy(double zr, double zi, double fnu, int kode, int n, double *restrict cyr,
+int camos_zbesy(double zr, double zi, double fnu, int kode, int n, double *restrict cyr,
           double *restrict cyi, int *restrict nz, double *restrict cwrkr, double *restrict cwrki) {
   static const double r1m5 = log10(FLT_RADIX);
 
@@ -199,11 +199,11 @@ int zbesy(double zr, double zi, double fnu, int kode, int n, double *restrict cy
     return ierr;
   }
   hcii = .5;
-  ierr = zbesh(zr, zi, fnu, kode, 1, n, &cyr[1], &cyi[1], &nz1);
+  ierr = camos_zbesh(zr, zi, fnu, kode, 1, n, &cyr[1], &cyi[1], &nz1);
   if (ierr != 0 && ierr != 3) {
     goto L170;
   }
-  ierr = zbesh(zr, zi, fnu, kode, 2, n, &cwrkr[1], &cwrki[1], &nz2);
+  ierr = camos_zbesh(zr, zi, fnu, kode, 2, n, &cwrkr[1], &cwrki[1], &nz2);
   if (ierr != 0 && ierr != 3) {
     goto L170;
   }

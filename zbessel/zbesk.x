@@ -6,7 +6,7 @@
 #include <math.h>
 
 
-int zbesk(double zr, double zi, double fnu, int kode, int n, double *restrict cyr,
+int camos_zbesk(double zr, double zi, double fnu, int kode, int n, double *restrict cyr,
           double *restrict cyi, int *restrict nz) {
   static const double r1m5 = log10(FLT_RADIX);
 

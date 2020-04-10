@@ -6,7 +6,7 @@
 #include <limits.h>
 
 
-int zbiry(double zr, double zi, int id, int kode, double *restrict bir, double *restrict bii) {
+int camos_zbiry(double zr, double zi, int id, int kode, double *restrict bir, double *restrict bii) {
   static const double r1m5 = log10(FLT_RADIX);
 
   /* Initialized data */

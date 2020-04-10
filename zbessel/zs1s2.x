@@ -5,7 +5,7 @@
 #include <math.h>
 
 
-void zs1s2(double zrr, double zri, double *restrict s1r, double *restrict s1i, double *restrict s2r,
+static void zs1s2(double zrr, double zri, double *restrict s1r, double *restrict s1i, double *restrict s2r,
            double *restrict s2i, int *restrict nz, double ascle, double alim, int *restrict iuf) {
   /* Local variables */
   double aa, c1i, as1, as2, c1r, aln, s1di, s1dr;

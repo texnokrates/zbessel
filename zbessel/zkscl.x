@@ -5,7 +5,7 @@
 #include <math.h>
 
 
-void zkscl(double zrr, double zri, double fnu, int n, double *restrict yr,
+static void zkscl(double zrr, double zri, double fnu, int n, double *restrict yr,
            double *restrict yi, int *restrict nz, double rzr, double rzi, double ascle,
            double tol, double elim) {
   /* Local variables */

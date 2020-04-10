@@ -3,7 +3,7 @@
 #include <math.h>
 
 
-void zshch(double zr, double zi, double *restrict cshr, double *restrict cshi, double *restrict cchr,
+static void zshch(double zr, double zi, double *restrict cshr, double *restrict cshi, double *restrict cchr,
            double *restrict cchi) {
   /* Local variables */
   double ch, cn, sh, sn;

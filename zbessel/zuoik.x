@@ -5,7 +5,7 @@
 #include <math.h>
 
 
-void zuoik(double zr, double zi, double fnu, int kode, int ikflg, int n,
+static void zuoik(double zr, double zi, double fnu, int kode, int ikflg, int n,
            double *restrict yr, double *restrict yi, int *restrict nuf, double tol, double elim,
            double alim) {
   /* Initialized data */

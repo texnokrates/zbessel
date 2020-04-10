@@ -6,7 +6,7 @@
 #include <limits.h>
 
 
-void zbuni(double zr, double zi, double fnu, int kode, int n, double *restrict yr,
+static void zbuni(double zr, double zi, double fnu, int kode, int n, double *restrict yr,
            double *restrict yi, int *restrict nz, int nui, int *restrict nlast, double fnul, double tol,
            double elim, double alim) {
   /* Local variables */

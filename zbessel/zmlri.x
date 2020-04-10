@@ -5,7 +5,7 @@
 #include <math.h>
 
 
-void zmlri(double zr, double zi, double fnu, int kode, int n, double *restrict yr,
+static void zmlri(double zr, double zi, double fnu, int kode, int n, double *restrict yr,
            double *restrict yi, int *restrict nz, double tol) {
   /* Local variables */
   int i__, k, m;

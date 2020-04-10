@@ -6,7 +6,7 @@
 #include <math.h>
 
 
-int zairy(double zr, double zi, int id, int kode, double *restrict air, double *restrict aii,
+int camos_zairy(double zr, double zi, int id, int kode, double *restrict air, double *restrict aii,
           int *restrict nz) {
   static const double r1m5 = log10(FLT_RADIX);
 

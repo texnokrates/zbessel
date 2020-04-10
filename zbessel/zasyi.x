@@ -5,7 +5,7 @@
 #include <math.h>
 
 
-void zasyi(double zr, double zi, double fnu, int kode,
+static void zasyi(double zr, double zi, double fnu, int kode,
            int n, double *restrict yr, double *restrict yi, int *restrict nz,
            double rl, double tol, double elim, double alim) {
   /* Initialized data */

@@ -6,7 +6,7 @@
 #include <math.h>
 
 
-void zseri(double zr, double zi, double fnu, int kode, int n, double *restrict yr,
+static void zseri(double zr, double zi, double fnu, int kode, int n, double *restrict yr,
            double *restrict yi, int *restrict nz, double tol, double elim, double alim) {
   /* Local variables */
   int i__, k, l, m;
